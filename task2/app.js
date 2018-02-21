@@ -50,7 +50,8 @@ new http.Server((req, res) => {
                 res.status = 200;
                 res.end("Successfully deleted")
             } else {
-                console.log('File not found, so not deleting.');
+                res.statusCode = 404;
+                res.end('Page not found')
             }
         });
     }
