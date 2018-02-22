@@ -11,24 +11,26 @@ new http.Server((req, res) => {
         file.pipe(res)
 
     } else if (req.url === '/file.txt' && req.method === "GET") {
-        var filePath = req.url.substr(1);
+        let filePath = req.url.substr(1);
         try {
-            fs.statSync(__dirname + '/files/file.txt');
+            fs.statSync(__dirname + `/files/${filePath}`);
             res.writeHead(200, {
                 'Content-Type': 'text/plain'
             })
-            const file = new fs.createReadStream(__dirname + '/files/file.txt', 'utf8');
+            const file = new fs.createReadStream(__dirname + `/files/${filePath}`, 'utf8');
             file.pipe(res)
         } catch (err) {
             res.statusCode = 404;
             res.end('Page not found')
         }
     } else if (req.url === '/file.txt' && req.method === "POST") {
+        let filePath = req.url.substr(1);
+        console.log(filePath)
         res.writeHead(200, {
             'Content-Type': 'text/plain'
         })
-        const file = new fs.createWriteStream(__dirname + '/files/file.txt', 'utf8');
-        fs.exists('./files/file.txt', function (exists) {
+        const file = new fs.createWriteStream(__dirname + `/files/${filePath}`, 'utf8');
+        fs.exists(`/files/${filePath}`, function (exists) {
             if (exists) {
                 res.statusCode = 409;
                 res.end('File exits')
@@ -44,9 +46,13 @@ new http.Server((req, res) => {
         })
 
     } else if (req.url === '/file.txt' && req.method === "DELETE") {
-        fs.exists('./files/file.txt', function (exists) {
+        console.log(req.method)
+        let filePath = req.url.substr(1);
+        console.log(`/files/${filePath}`)
+        fs.exists(`/files/${filePath}`, function (exists) {
             if (exists) {
-                fs.unlink('./files/file.txt');
+                console.log('inside')
+                fs.unlink(`/files/${filePath}`);
                 res.status = 200;
                 res.end("Successfully deleted")
             } else {
