@@ -25,12 +25,11 @@ new http.Server((req, res) => {
         }
     } else if (req.url === '/file.txt' && req.method === "POST") {
         let filePath = req.url.substr(1);
-        console.log(filePath)
         res.writeHead(200, {
             'Content-Type': 'text/plain'
         })
         const file = new fs.createWriteStream(__dirname + `/files/${filePath}`, 'utf8');
-        fs.exists(`/files/${filePath}`, function (exists) {
+        fs.exists(`./files/${filePath}`, function (exists) {
             if (exists) {
                 res.statusCode = 409;
                 res.end('File exits')
@@ -46,20 +45,24 @@ new http.Server((req, res) => {
         })
 
     } else if (req.url === '/file.txt' && req.method === "DELETE") {
-        console.log(req.method)
         let filePath = req.url.substr(1);
-        console.log(`/files/${filePath}`)
-        fs.exists(`/files/${filePath}`, function (exists) {
+        fs.exists(`./files/${filePath}`, function (exists) {
+            console.log(exists)
             if (exists) {
-                console.log('inside')
-                fs.unlink(`/files/${filePath}`);
-                res.status = 200;
-                res.end("Successfully deleted")
+                fs.unlink(`./files/${filePath}`, function (err) {
+                    if (err) {
+                        console.log(err);
+                    };
+                    res.end('file deleted');
+                });
             } else {
                 res.statusCode = 404;
                 res.end('Page not found')
             }
         });
+    } else {
+        res.statusCode = 500;
+        res.end('Server Error')
     }
 
 }).listen(3000);
