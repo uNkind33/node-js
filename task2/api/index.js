@@ -11,6 +11,10 @@ module.exports = {
 
     getFile(res, req) {
         let filePath = req.url.substr(1);
+        if (filePath.includes('/') || filePath.includes('..')) {
+            res.statusCode = 400;
+            res.end('Nested paths are not allowed');
+        }
         try {
             fs.statSync(`./files/${filePath}`);
             res.writeHead(200, {

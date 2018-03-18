@@ -16,6 +16,11 @@ new http.Server((req, res) => {
     } else if (req.method === "DELETE") {
         ServerApi.deleteFile(res, req);
 
+    } else if (req.url.includes('/') || req.url.includes('..')) {
+        console.log(req.url)
+        res.statusCode = 400;
+        res.end('Nested paths are not allowed');
+
     } else {
         res.statusCode = 500;
         res.end('Server Error')
