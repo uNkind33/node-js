@@ -1,5 +1,6 @@
 const { removeListeners } = require('./utils.js');
 const { ReadStream } = require('fs');
+
 Object.assign(ReadStream.prototype, { removeListeners });
 
 function readStream(stream) {

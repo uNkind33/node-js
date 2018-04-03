@@ -1,0 +1,18 @@
+extends layout
+
+block content
+
+  form(action="/register" method="post")
+    h1 Register an account:
+
+    .form-group
+      label(for="user-name") User name:
+      input.form-control(type="text" id="user-name" name="displayName" placeholder="MyName" required autofocus)
+    .form-group
+      label(for="email") Email:
+      input.form-control(type="email" id="email" name="email" placeholder="my@mail.com" required)
+    .form-group
+      label(for="password") Password:
+      input.form-control(type="password" id="password" name="password" required)
+
+    button.btn.btn-lg.btn-primary.btn-block(type="submit") Login
